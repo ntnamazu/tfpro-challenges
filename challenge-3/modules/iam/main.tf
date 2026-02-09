@@ -4,8 +4,10 @@ resource "aws_iam_user" "lb" {
 }
 
 resource "aws_iam_user_policy" "lb_ro" {
+  count = length(aws_iam_user.lb)
+
   name = "ec2-describe-policy"
-  user = "success-user"
+  user = aws_iam_user.lb[count.index].name
   policy = jsonencode({
     Version = "2012-10-17"
     Statement = [
